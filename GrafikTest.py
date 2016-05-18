@@ -13,7 +13,8 @@ def main():
     eye1.draw(win)
     #
     win.getMouse()
-    eye2 = Line(Point(45, 105), Point(55, 105)) # set endpoints
+    eye2 = Line(Point(45, 105), 7) # set endpoints
+    eye2.setFill('black')
     eye2.setWidth(10)
     eye2.draw(win)
 
