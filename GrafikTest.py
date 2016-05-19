@@ -12,6 +12,13 @@ def main():
     eye1.setFill('blue')
     eye1.draw(win)
 
+    for i in range(10000):
+        eye1 = Circle(Point(random.randint(0,500), random.randint(0,500)), 5)
+        col = "#" + str(random.randint(10,99)) + str(random.randint(10,99)) + str(random.randint(10,99))
+        eye1.setFill(col)
+        eye1.draw(win)
+    #
+
     #win.getMouse()
     eye2 = Circle(Point(45, 105), Point(55, 105)) # set endpoints
     eye2.setFill('blue')
