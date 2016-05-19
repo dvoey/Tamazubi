@@ -27,7 +27,7 @@ def main():
     label = Text(Point(100, 120), 'A face')
     label.setFill('red')
     label.draw(win)
-#
+
     win.getMouse()
     win.close()
 
