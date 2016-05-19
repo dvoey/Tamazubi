@@ -31,5 +31,4 @@ def main():
     win.getMouse()
     win.close()
 
-#tes124t
 main()
