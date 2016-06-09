@@ -1,4 +1,4 @@
-plusminus = raw_input()
+plusminus = input()
 ergebnis = plusminus
 
 print plusminus
