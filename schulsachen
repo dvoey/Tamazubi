@@ -1,0 +1,39 @@
+<html>
+
+  <head><title>Bestellungbestätigung</title></head>
+  <body>
+    <b>Ihre Bestellung:</b><br><br>
+    <table border=2>
+      <tr><th>Anzahl</th> <th>PZN</th> <th>Bezeichnung</th> <th>Preis</th> <th>Art</th> <th>Menge</th> <th>Einheit</th><th>UVP</th> <th>Gesamt</th><th>Gesamt UVP</th></tr>
+
+      <?php
+        //Produktdaten lesen
+        include('produkt1assoc.inc.php');
+        
+        $sum=0;
+        //Formular aufbauen
+		 foreach ($produkt as $i => $wert) //For-each
+          if ($_GET[$i] > 0) {
+            echo "<tr>";
+            echo "<td>".$_GET[$i]."</td>\n";
+            echo "<td>".$i."</td>\n";
+            echo "<td>".$wert["bez"]."</td>\n";
+			echo "<td style='text-align: right;'>".$wert["preis"]." € </td>\n";
+			echo "<td>".$wert["art"]."</td>\n";
+			echo "<td>".$wert["menge"]."</td>\n";
+			echo "<td>".$wert["einheit"]."</td>\n";
+			printf ("<td style='text-align: right;'>%.2f € </td>\n", $wert["uvp"]);
+            printf ("<td style='text-align: right;'>%.2f €</td>\n", $_GET[$i]*$wert["preis"]);
+			printf ("<td style='text-align: right;'>%.2f €</td>\n", $_GET[$i]*$wert["uvp"]);
+            echo "</tr>";
+            $sum += $_GET[$i]*$wert["preis"];
+			$sum1 += $_GET[$i]*$wert["uvp"];
+          }
+        printf ("<tr><td colspan=\"8\"><b>GESAMTSUMME</b></td><td style='text-align: right;'><b>%.2f €</b></td></tr>\n", $sum);
+		printf ("<tr><td colspan=\"9\"><b>GESAMTSUMME UVP</b></td><td style='text-align: right;'><b>%.2f €</b></td></tr>\n", $sum1);
+      ?>
+
+    </table>
+  </body>
+
+</html>
