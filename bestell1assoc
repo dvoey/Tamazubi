@@ -1,0 +1,38 @@
+<html>
+
+  <head><title>Bestellung</title></head>
+  
+  <body>
+    
+		<b>Produkte:</b><br><br>
+    <form action="bestaet1assoc.php" method="get">
+      <table border="2"><tr>
+        <th>Anzahl</th> <th>PZN</th> <th>Bezeichnung</th><th>Art</th><th>Menge</th><th>Einheit</th><th>Preis</th><th>UVP</th>
+			  </tr>
+
+		    <?php
+		      //Produktdaten lesen
+		      include('produkt1assoc.inc.php');
+		      
+					//Formular aufbauen
+		      foreach ($produkt as $i => $wert)  {  //For-each
+						echo "<tr>";
+						echo "<td><input type=\"text\" name=\"".$i."\" size=3></td>\n";
+						echo "<td>".$i."</td>\n";
+						echo "<td>".$wert["bez"]."</td>\n";
+						echo "<td>".$wert["art"]."</td>\n";
+						echo "<td>".$wert["menge"]."</td>\n";
+						echo "<td>".$wert["einheit"]."</td>\n";
+						printf ("<td style='text-align: right;'>%.2f € </td>\n", $wert["preis"]);
+						printf ("<td style='text-align: right;'>%.2f € </td>\n", $wert["uvp"]);
+						echo "</tr>";
+					}
+		    ?>
+
+      </table>
+      <input type="submit" name="gesendet" value="Berechnen">
+    </form>
+
+  </body>
+
+</html>
