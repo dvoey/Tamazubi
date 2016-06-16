@@ -1,0 +1,46 @@
+<html>
+
+	<head><title>Arbeiten mit Dateien</title></head>
+	<body>
+		<b>Ihre Bestellung:</b><br><br>
+		<table border=1>
+			<tr>
+				<th>Artikel-Nr</th>
+				<th>Bezeichnung</th>
+				<th>Preis</th>
+				<th>Bestellmenge</th>
+				<th>Bestellnr.</th>
+				<th>Gesamtpreis</th>
+			</tr>
+  
+	<?php
+		//Produktdaten lesen
+		$zeilen = file("positionen.csv") or die("Eingabefile kann nicht geöffnet werden!");
+		
+		for ($i=0; $i<count($zeilen); $i++)
+		{
+			list($id[], $bez[], $preis[], $anz[], $bestnr[]) = explode(";", $zeilen[$i]);
+		}
+		
+		//Formular aufbauen: Aufgabe 2
+		for ($i=0; $i<count($bez); $i++)
+		{
+			echo "<tr>";
+			//echo "<td><input type=\"text\" name=\"".$id[$i]."\" size=3></td>\n";
+			echo "<td>".$id[$i]."</td>\n";
+			echo "<td>".$bez[$i]."</td>\n";
+			printf ("<td>%.2f</td>\n", $preis[$i]);
+			printf ("<td>%.2f</td>\n", $anz[$i]);
+			printf ("<td>%d</td>\n", $bestnr[$i]);
+			printf ("<td>%.2f €</td>\n", $preis[$i]*$anz[$i]);
+			echo "<tr>";
+		}
+		
+		//In Datei schreiben: Aufgabe 3
+		
+
+	?>
+		</table>
+	</body>
+
+</html>
