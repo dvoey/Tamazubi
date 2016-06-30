@@ -1,0 +1,120 @@
+<html>
+	<head><title>Bestellungbestätigung</title></head>
+	<body>
+		<b>Ihre Bestellung:</b><br><br>
+		<form action="<?php echo $_SERVER['PHP_SELF'] ?>"  method="get">
+			<table border=2>
+				<tr>
+					<th>Anzahl</th> 
+					<th>PZN</th> 
+					<th>Bezeichnung</th> 
+					<th>Preis</th> 
+					<th>Gesamt</th>
+				</tr>
+		
+			<?php
+			//Produktdaten lesen
+			$zeilen = file("produkt.csv") or die("<br><b>FEHLER: Eingabefile kann nicht geöffnet werden!</b>");
+			for ($i=0; $i<count($zeilen); $i++) 
+			{
+				$teil = explode(';', $zeilen[$i]);
+				list($pzn[], $bez[], $preis[]) = $teil;	
+			}
+				  
+			$sum=0;
+			//Formular aufbauen
+			for ($i=0; $i<count($bez); $i++) 
+			{
+				if ($_GET[$pzn[$i]] > 0) 
+				{
+					echo "<tr>";
+					echo "<td><input type=\"text\" name=\"".$pzn[$i]."\" size=3 
+					value=\"".$_GET[$pzn[$i]]."\"></td>\n";
+					echo "<td>".$pzn[$i]."</td>\n";
+					echo "<td>".$bez[$i]."</td>\n";
+					printf ("<td>%.2f</td>\n", $preis[$i]);
+					printf ("<td>%.2f</td>\n", $_GET[$pzn[$i]]*$preis[$i]);
+					echo "</tr>";
+					$sum += $_GET[$pzn[$i]]*$preis[$i];
+				}
+			}
+			echo "<tr><td colspan=\"4\"><b>GESAMTSUMME</b></td><td><b>$sum</b></td></tr>\n";
+			
+			?>
+		
+		
+		
+			</table><br>
+			
+			<input type="radio" name="anrede" value="Frau" checked>Frau
+			<input type="radio" name="anrede" value="Herr">Herr<br>
+			<input type="text" name="vname" value="<?php echo $_GET['vname']?>" required >  Vorname<br>
+			<input type="text" name="nname" value="<?php echo $_GET['nname']?>" required >  Nachname<br>
+			<input type="text" name="strasse" value="<?php echo $_GET['strasse']?>" required >  Straße<br>
+			<input type="text" name="hausnr" value="<?php echo $_GET['hausnr']?>" required >  Hausnummer<br>
+			<input type="tnumber" name="plz" maxlength="5" value="<?php echo $_GET['plz']?>" required >  PLZ<br>
+			<input type="text" name="ort" value="<?php echo $_GET['ort']?>" required >  Ort<br>
+			<input type="text" name="email" value="<?php echo $_GET['email']?>" required >  E-Mail<br>
+			<input type="text" name="telefon" value="<?php echo $_GET['telefon']?>" required >  Telefon<br><br>
+		
+			<?php
+			
+			$anrede = $_GET['anrede'];
+			$vname = $_GET['vname'];
+			$nname = $_GET['nname'];
+			$strasse = $_GET['strasse'];
+			$hausnr = $_GET['hausnr'];
+			$plz = $_GET['plz'];
+			$ort = $_GET['ort'];
+			$email = $_GET['email'];
+			$telefon = $_GET['telefon'];
+			
+			?>
+			
+			<input type="submit" name="abschicken" value="Bestellung abschicken">
+			<input type="submit" name="aktualisieren" value="Bestellung aktualisieren">
+		</form>
+
+		<form action="bestell_csv.php" method="get">
+			<?php
+		    for ($i=0; $i<count($bez); $i++) 
+			{
+				if ($_GET[$pzn[$i]] > 0) 
+				{
+					echo "<input type=\"hidden\" name=\"".$pzn[$i]."\" value=\"".$_GET[$pzn[$i]]."\">\n";
+				}
+			}
+			?>
+			<input type="submit" name="aendern" value="Artikel hinzufuegen">
+		</form>
+
+		<?php
+		// Bestellung speichern
+	    if (isset($_GET["abschicken"])) 
+		{
+		    $fname ="Bestellung_".date("Ymd_His").".csv";
+		    $ausgabe = fopen($fname, "w");
+				for ($i=0; $i<count($bez); $i++) 
+				{
+					if ($_GET[$pzn[$i]] > 0) 
+					{
+						fputs($ausgabe, $_GET[$pzn[$i]].";".$pzn[$i]."\n");
+					}
+				}
+				fclose($ausgabe);
+				
+				$adresse = fopen($fname, "a");
+					fputs($adresse, $anrede.";".$vname.";".$nname.";".$strasse.";".$hausnr.";".$plz.";".$ort.";".$email.";".$telefon."\n");
+				fclose($adresse);
+				
+				echo "<br><b>Die Bestellung wurde in $fname gespeichert!</b><br>";
+		}
+		?>
+
+	</body>
+
+</html>
+
+-Kunden auslagern
+-Kennwort noch nicht notwendig
+-
