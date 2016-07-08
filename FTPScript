@@ -1,0 +1,89 @@
+    #FTP Server Information - SET VARIABLES
+    $ftp = "ftpserver" 
+    $user = 'ftpuser' 
+    $pass = 'passwort'
+	
+	#################FTP root ordner
+    $folder = 'Ordner'
+	#Lokaler root ordner
+    $target = "C:\temp\"
+	
+	###############ftp images ordner
+	$imagesordner = 'Images'
+	#lokaler images ordner
+	$targetimages = "C:\temp\Images\"
+	
+	# Check if the folder exist if not create it 
+	If (!(Test-Path $target)) {
+ 
+	New-Item -Path $target -ItemType Directory
+	}
+	else {
+	Write-Host "Directory already exists!"
+	}
+	
+	# Check if the folder exist if not create it 
+	If (!(Test-Path $targetimages)) {
+ 
+	New-Item -Path $targetimages -ItemType Directory
+	}
+	else {
+	Write-Host "Directory already exists!"
+	}
+
+
+    #SET CREDENTIALS
+    $credentials = new-object System.Net.NetworkCredential($user, $pass)
+
+    function Get-FtpDir ($url,$credentials) {
+        $request = [Net.WebRequest]::Create($url)
+        $request.Method = [System.Net.WebRequestMethods+FTP]::ListDirectory
+        if ($credentials) { $request.Credentials = $credentials }
+        $response = $request.GetResponse()
+        $reader = New-Object IO.StreamReader $response.GetResponseStream() 
+        $reader.ReadToEnd()
+        $reader.Close()
+        $response.Close()
+    }
+
+    #SET FOLDER PATH für root ordner + files
+    $folderPath= $ftp + "/" + $folder + "/"
+
+    $Allfiles=Get-FTPDir -url $folderPath -credentials $credentials
+    $files = ($Allfiles -split "`r`n")
+    $files 
+
+    $webclient = New-Object System.Net.WebClient 
+    $webclient.Credentials = New-Object System.Net.NetworkCredential($user,$pass) 
+    $counter = 0
+    foreach ($file in ($files | where {$_ -like "*.*" -or $_.Attributes -eq 'Directory'})){
+        $source=$folderPath + $file  
+        $destination = $target + $file 
+        $webclient.DownloadFile($source, $target+$file)
+
+        #PRINT FILE NAME AND COUNTER
+        $counter++
+        $counter
+        $source
+    }
+	
+	#SET FOLDER PATH für images
+    $folderPath2= $ftp + "/" + $folder + "/" + $imagesordner + "/"
+
+    $Allfiles=Get-FTPDir -url $folderPath2 -credentials $credentials
+    $files2 = ($Allfiles -split "`r`n")
+    $files2 
+
+    $webclient = New-Object System.Net.WebClient 
+    $webclient.Credentials = New-Object System.Net.NetworkCredential($user,$pass) 
+    $counter = 0
+    foreach ($file2 in ($files2 | where {$_ -like "*.*" -or $_.Attributes -eq 'Directory'})){
+        $source=$folderPath2 + $file2  
+        $destination = $targetimages + $file2 
+        $webclient.DownloadFile($source, $targetimages+$file2)
+
+        #PRINT FILE NAME AND COUNTER
+        $counter++
+        $counter
+        $source
+    }
