@@ -31,8 +31,8 @@ class Tamazubi(object):
 
         text.close()
 
-    def laden(self,pfad):
-        deltatime = timedelta(0,0,0,0)
+    def laden(self, pfad):
+        deltatime = timedelta(0, 0, 0, 0)
         text = open(pfad, 'r')
 
         while True:
@@ -55,9 +55,11 @@ class Tamazubi(object):
                 self.hunger = int(split[1])
 
             if split[0] == 'ZEIT':
-                deltatime = datetime.now() - datetime.strptime(split[1],"%Y-%m-%d %H:%M:%S.%f")
-
+                deltatime = datetime.now() - datetime.strptime(split[1], "%Y-%m-%d %H:%M:%S.%f")
+                print (deltatime)
         text.close()
+
+
 
 t = Tamazubi('c:/temp/test.txt') #azubiname,azubialter,azubityp)
 t.speichern()
