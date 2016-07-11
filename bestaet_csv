@@ -1,6 +1,7 @@
 <html>
 	<head><title>Bestellungbestätigung</title></head>
 	<body>
+		<h1>  Aufgabe 1 </h1>
 		<b>Ihre Bestellung:</b><br><br>
 		<form action="<?php echo $_SERVER['PHP_SELF'] ?>"  method="get">
 			<table border=2>
@@ -42,8 +43,7 @@
 			
 			?>
 		
-		
-		
+			
 			</table><br>
 			
 			<input type="radio" name="anrede" value="Frau" checked>Frau
@@ -85,7 +85,7 @@
 				}
 			}
 			?>
-			<input type="submit" name="aendern" value="Artikel hinzufuegen">
+			<input type="submit" name="aendern" value="Artikel hinzufügen">
 		</form>
 
 		<?php
@@ -98,13 +98,13 @@
 				{
 					if ($_GET[$pzn[$i]] > 0) 
 					{
-						fputs($ausgabe, $_GET[$pzn[$i]].";".$pzn[$i]."\n");
+						fputs($ausgabe, $_GET[$pzn[$i]].";".$pzn[$i].";".$bez[$i]."\n");
 					}
 				}
 				fclose($ausgabe);
 				
 				$adresse = fopen($fname, "a");
-					fputs($adresse, $anrede.";".$vname.";".$nname.";".$strasse.";".$hausnr.";".$plz.";".$ort.";".$email.";".$telefon."\n");
+					fputs($adresse, "\n".$anrede.";".$vname.";".$nname.";".$strasse.";".$hausnr.";".$plz.";".$ort.";".$email.";".$telefon);
 				fclose($adresse);
 				
 				echo "<br><b>Die Bestellung wurde in $fname gespeichert!</b><br>";
@@ -114,7 +114,3 @@
 	</body>
 
 </html>
-
--Kunden auslagern
--Kennwort noch nicht notwendig
--
