@@ -42,7 +42,7 @@
 					printf ("<td style='text-align: right'>%.2f €</td>\n", $preis[$i]*$anz[$i]); //Aufgabe 3
 					echo "</tr>";
 					$gesamtpreis[$j] += ($preis[$i]*$anz[$i]);				//Aufgabe 4	
-					fputs($handle, $bestnr[$i].";".$id[$i].";".$bez[$i].";".$preis[$i].";".$anz[$i].";".$preis[$i]*$anz[$i]."; \n");		//Aufgabe 6
+					fputs($handle, $bestnr[$i].";".$id[$i].";".$bez[$i].";".$preis[$i].";".$anz[$i]."; \n");		//Aufgabe 6
 				}
 			}	
 			//Aufgabe 4
@@ -50,6 +50,7 @@
 			echo "<td colspan=\"5\"><b>Gesamtpreis der Bestellung</b></td>";
 			printf ("<td style='text-align: right'><b>%.2f €</b></td>\n", $gesamtpreis[$j]);
 			echo "</tr>";
+			
 			fclose($handle);			//Aufgabe 6
 		}
 		
