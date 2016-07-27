@@ -1,5 +1,6 @@
 # coding=utf-8
 from datetime import datetime, timedelta
+from Klasse_Hunger import Hungerverwaltung
 
 class Tamazubi(object):
 
@@ -21,13 +22,13 @@ class Tamazubi(object):
             self.ausbildungstyp = raw_input('Was ist deine Ausbildung?')
 
 
-    def speichern(self):
-        text = open('c:/temp/test.txt', 'w')
+    def speichern(self,pfad):
+        text = open(pfad, 'w')
         text.write("ZEIT="+str(datetime.now())+"\n")
         text.write("NAME="+self.name+"\n")
         text.write("ALTER="+str(self.alter)+"\n")
         text.write("AUSBILDUNG="+self.ausbildungstyp+"\n")
-        text.write("HUNGER="+str(self.hunger)+"\n")
+        self.hunger.speichern(text)
 
         text.close()
 
@@ -51,16 +52,16 @@ class Tamazubi(object):
             if split[0] == 'AUSBILDUNG':
                 self.ausbildungstyp = split[1]
 
-            if split[0] == 'HUNGER':
-                self.hunger = int(split[1])
-
             if split[0] == 'ZEIT':
                 deltatime = datetime.now() - datetime.strptime(split[1], "%Y-%m-%d %H:%M:%S.%f")
-                print (deltatime)
+
         text.close()
+
+        self.hunger.laden(pfad)
 
 
 
 t = Tamazubi('c:/temp/test.txt') #azubiname,azubialter,azubityp)
-t.speichern()
+t.speichern('c:/temp/test.txt')
+t.hunger.get_hungerwert()
 #t.laden()

@@ -4,12 +4,13 @@ from datetime import datetime, timedelta
 class Hungerverwaltung(object):
 
     def __init__(self):
-        self.suesswert = -1 #0-100
-        self.vitaminwert = -1 #0-100
-        self.durstwert = -1 #0-100
+        self.suesswert = 100 #0-100
+        self.vitaminwert = 100 #0-100
+        self.durstwert = 100 #0-100
 
-    def update(self, timedelta): #nur spezifische werte geupdatet
-        text = open('c:/temp/test.txt', 'r')
+    def laden(self,pfad): #nur spezifische werte geupdatet
+        deltatime = timedelta(0, 0, 0, 0)
+        text = open(pfad, 'r')
 
         while True:
             zeile = text.readline()
@@ -18,45 +19,59 @@ class Hungerverwaltung(object):
 
             split = zeile.replace("\n", "").split("=", 1)
 
-            if split[0] == 'HUNGER':
-                self.hminWert = int(split[1])
-
-    def get_hungerwert(self): #gesamthungerwert
-        hungerwertliste = [self.suesswert, self.vitaminwert, self.durstwert]
-        hminWert = min(hungerwertliste)
-        print(hminWert)
-
-hminWert = -1 #0-100
-
-DeltaZeit = alte Zeit - neue Zeit #in minuten konvertieren
-
-    if suesswert > 0:
-        then Ergebnis = hWert - round(DeltaZeit/2.5)
-        if (Ergebnis < 0): ergebnis =0
-        print(Ergebnis)
-
-    if vitaminwert > 0:
-        then Ergebnis = hWert - round(DeltaZeit/3.5)
-        if (Ergebnis < 0): ergebnis =0
-        print(Ergebnis)
-
-    if durstwert > 0:
-        then Ergebnis = hWert - round(DeltaZeit/2)
-        if (Ergebnis < 0): ergebnis =0
-        print(Ergebnis)
-
-    if suesswert or vitaminwert or durstwert <= 35:
-        print ("Bitte füttern!")
-
-    Ergebnis = hWert
-
-    def speichern(self):
-        text = open('c:/temp/test.txt', 'w')
-        text.write("ZEIT="+str(datetime.now())+"\n")
-        text.write("NAME="+self.name+"\n")
-        text.write("ALTER="+str(self.alter)+"\n")
-        text.write("AUSBILDUNG="+self.ausbildungstyp+"\n")
-        text.write("HUNGER="+str(self.hWert)+"\n")
+            if split[0] == 'ZEIT':
+                deltatime = datetime.now() - datetime.strptime(split[1], "%Y-%m-%d %H:%M:%S.%f")
+            if split[0] == 'SUESSWERT':
+                self.suesswert = int(split[1])
+            if split[0] == 'VITAMINWERT':
+                self.vitaminwert = int(split[1])
+            if split[0] == 'DURSTWERT':
+                self.durstwert = int(split[1])
 
         text.close()
+
+        # Hungerwerte anhand der Uhrzeit aktualisieren
+        punkte = int(deltatime.seconds / 60)
+
+        self.suesswert = self.suesswert - punkte
+        self.vitaminwert = self.vitaminwert - punkte
+        self.durstwert = self.durstwert - punkte
+
+
+    def speichern(self, text):
+        text.write("SUESSWERT="+str(self.suesswert)+"\n")
+        text.write("VITAMINWERT="+str(self.vitaminwert)+"\n")
+        text.write("DURSTWERT="+str(self.durstwert)+"\n")
+
+
+    def get_hungerwert(self): #gesamthungerwert
+       return min(self.durstwert, self.vitaminwert, self.suesswert)
+
+# hminWert = -1 #0-100
+# alteZeit = datetime.strptime(split[1])
+# neueZeit = datetime.now()
+#
+# DeltaZeit = alteZeit - neueZeit #in minuten konvertieren
+#
+# if suesswert > 0:
+#     Ergebnis = hWert - round(DeltaZeit/2.5)
+#     if (Ergebnis < 0): ergebnis =0
+#     print(Ergebnis)
+#
+# if vitaminwert > 0:
+#     Ergebnis = hWert - round(DeltaZeit/3.5)
+#     if (Ergebnis < 0): ergebnis =0
+#     print(Ergebnis)
+#
+# if durstwert > 0:
+#     Ergebnis = hWert - round(DeltaZeit/2)
+#     if (Ergebnis < 0): ergebnis =0
+#     print(Ergebnis)
+#
+# if suesswert or vitaminwert or durstwert <= 35:
+#     print ("Bitte fuettern!")
+#
+#     Ergebnis = hWert
+
+
 
