@@ -31,12 +31,20 @@ class Hungerverwaltung(object):
         text.close()
 
         # Hungerwerte anhand der Uhrzeit aktualisieren
-        punkte = int(deltatime.seconds / 60)
+        punkte = int(deltatime.seconds / 3600)
 
-        self.suesswert = self.suesswert - punkte
-        self.vitaminwert = self.vitaminwert - punkte
-        self.durstwert = self.durstwert - punkte
+        self.suesswert = self.suesswert - punkte*0.5
+        self.vitaminwert = self.vitaminwert - punkte*1.5
+        self.durstwert = self.durstwert - punkte*2
 
+        if (self.suesswert < 0):
+            self.suesswert = 0
+
+        if (self.vitaminwert < 0):
+            self.vitaminwert = 0
+
+        if (self.durstwert < 0):
+            self.durstwert = 0
 
     def speichern(self, text):
         text.write("SUESSWERT="+str(self.suesswert)+"\n")
@@ -47,31 +55,20 @@ class Hungerverwaltung(object):
     def get_hungerwert(self): #gesamthungerwert
        return min(self.durstwert, self.vitaminwert, self.suesswert)
 
-# hminWert = -1 #0-100
-# alteZeit = datetime.strptime(split[1])
-# neueZeit = datetime.now()
-#
-# DeltaZeit = alteZeit - neueZeit #in minuten konvertieren
-#
-# if suesswert > 0:
-#     Ergebnis = hWert - round(DeltaZeit/2.5)
-#     if (Ergebnis < 0): ergebnis =0
-#     print(Ergebnis)
-#
-# if vitaminwert > 0:
-#     Ergebnis = hWert - round(DeltaZeit/3.5)
-#     if (Ergebnis < 0): ergebnis =0
-#     print(Ergebnis)
-#
-# if durstwert > 0:
-#     Ergebnis = hWert - round(DeltaZeit/2)
-#     if (Ergebnis < 0): ergebnis =0
-#     print(Ergebnis)
-#
-# if suesswert or vitaminwert or durstwert <= 35:
-#     print ("Bitte fuettern!")
-#
-#     Ergebnis = hWert
+    def essen(self,deltaSuess,deltaVitamin,deltaDurst):
+        self.suesswert = self.suesswert + deltaSuess
+        self.vitaminwert += deltaVitamin
+        self.durstwert += deltaDurst
+
+        if self.suesswert > 100:
+            self.suesswert = 100
+
+        if self.vitaminwert > 100:
+            self.vitaminwert = 100
+
+        if self.durstwert > 100:
+            self.durstwert = 100
+
 
 
 
