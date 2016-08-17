@@ -1,6 +1,8 @@
 # coding=utf-8
 from datetime import datetime, timedelta
 from Klasse_Hunger import Hungerverwaltung
+from Klasse_Lernmotivation import Lernmotivationverwaltung
+
 
 class Tamazubi(object):
 
@@ -9,6 +11,7 @@ class Tamazubi(object):
         self.alter = -1
         self.ausbildungstyp = ""
         self.hunger = Hungerverwaltung() #0-100
+        self.lernmotivation = Lernmotivationverwaltung() #0-100
 
         self.laden(pfad)
 
@@ -29,6 +32,7 @@ class Tamazubi(object):
         text.write("ALTER="+str(self.alter)+"\n")
         text.write("AUSBILDUNG="+self.ausbildungstyp+"\n")
         self.hunger.speichern(text)
+        self.lernmotivation.speichern(text)
 
         text.close()
 

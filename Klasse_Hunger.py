@@ -53,9 +53,9 @@ class Hungerverwaltung(object):
 
 
     def get_hungerwert(self): #gesamthungerwert
-       return min(self.durstwert, self.vitaminwert, self.suesswert)
+        return min(self.durstwert, self.vitaminwert, self.suesswert)
 
-    def essen(self,deltaSuess,deltaVitamin,deltaDurst):
+    def essen(self, deltaSuess, deltaVitamin, deltaDurst):
         self.suesswert = self.suesswert + deltaSuess
         self.vitaminwert += deltaVitamin
         self.durstwert += deltaDurst
@@ -68,7 +68,3 @@ class Hungerverwaltung(object):
 
         if self.durstwert > 100:
             self.durstwert = 100
-
-
-
-
