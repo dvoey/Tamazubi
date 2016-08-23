@@ -8,7 +8,7 @@ class Hungerverwaltung(object):
         self.vitaminwert = 100 #0-100
         self.durstwert = 100 #0-100
 
-    def laden(self,pfad): #nur spezifische werte geupdatet
+    def laden(self, pfad): #nur spezifische werte geupdatet
         deltatime = timedelta(0, 0, 0, 0)
         text = open(pfad, 'r')
 
@@ -22,11 +22,11 @@ class Hungerverwaltung(object):
             if split[0] == 'ZEIT':
                 deltatime = datetime.now() - datetime.strptime(split[1], "%Y-%m-%d %H:%M:%S.%f")
             if split[0] == 'SUESSWERT':
-                self.suesswert = int(split[1])
+                self.suesswert = float(split[1])
             if split[0] == 'VITAMINWERT':
-                self.vitaminwert = int(split[1])
+                self.vitaminwert = float(split[1])
             if split[0] == 'DURSTWERT':
-                self.durstwert = int(split[1])
+                self.durstwert = float(split[1])
 
         text.close()
 
