@@ -10,7 +10,7 @@ class Tamazubi(object):
         self.name = ""
         self.alter = -1
         self.ausbildungstyp = ""
-        self.hunger = Hungerverwaltung() #0-100 test
+        self.hunger = Hungerverwaltung() #0-100
         self.lernmotivation = Lernmotivationverwaltung() #0-100
 
         self.laden(pfad)
