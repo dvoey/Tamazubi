@@ -30,7 +30,7 @@ class Hungerverwaltung(object):
 
         text.close()
 
-        # Hungerwerte anhand der Uhrzeit aktualisieren
+        #Hungerwerte anhand der Uhrzeit aktualisieren
         punkte = int(deltatime.seconds / 3600)
 
         self.suesswert = self.suesswert - punkte*0.5
