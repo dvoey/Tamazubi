@@ -62,6 +62,7 @@ class Tamazubi(object):
         text.close()
 
         self.hunger.laden(pfad)
+        self.lernmotivation.laden(pfad)
 
 
 

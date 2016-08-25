@@ -1,7 +1,30 @@
 
-suesswert = 10 #0-100
-vitaminwert = 3 #0-100
-durstwert = 55
+from Klasse_Lernmotivation import Lernmotivationverwaltung
 
-hungerwertliste = [suesswert, vitaminwert, durstwert]
-print (min(hungerwertliste))
+a = Lernmotivationverwaltung()
+
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(7)
+a.printStatus()
+a.lernen(10)
+a.printStatus()
+a.lernen(10)
+a.printStatus()

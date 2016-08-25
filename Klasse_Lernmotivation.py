@@ -1,6 +1,6 @@
 # coding=utf-8
 from datetime import datetime, timedelta
-from random import random
+from random import *
 
 
 class Lernmotivationverwaltung(object):
@@ -23,7 +23,7 @@ class Lernmotivationverwaltung(object):
             if split[0] == 'ZEIT':
                 deltatime = datetime.now() - datetime.strptime(split[1], "%Y-%m-%d %H:%M:%S.%f")
             if split[0] == 'LERNMOTIVATION':
-                self.lernmotivation = int(split[1])
+                self.lernmotivation = float(split[1])
             if split[0] == 'INTELLIGENZ':
                 self.intelligenz = int(split[1])
 
@@ -41,17 +41,31 @@ class Lernmotivationverwaltung(object):
         text.write("LERNMOTIVATION="+str(self.lernmotivation)+"\n")
         text.write("INTELLIGENZ="+str(self.intelligenz)+"\n")
 
-    def lernen(self, deltaLernen, deltaIntelligenz):
-        self.lernmotivation += deltaLernen
+    def printStatus(self):
+        print("Lernmotivation = " + str(self.lernmotivation) + ", Intelligenz = " + str(self.intelligenz))
+
+    def lernen(self, deltaLernen):
+        # deltaLernen wird von der Lernmotivation abgezogen (minimale Motivation ist 0)
+        # Intelligenzzuwachs ist abhängig von der Lermotivation und dem deltaLernen
+            # d.h. je größer die Lernmotivation desto größer der Intelligenzzuwachs
+            #      je größer deltaLernen desto größer der Intelligenzzuwachs
+        # Zufälliger Bonus beim Intelligenzzuwachs
+
+        deltaLernenReal = deltaLernen if deltaLernen <= self.lernmotivation else self.lernmotivation
+
+        if self.lernmotivation > 75:
+            deltaIntelligenz = (0.5+uniform(0.0, 0.2)) * deltaLernenReal
+
+        elif self.lernmotivation > 50:
+            deltaIntelligenz = (0.3+uniform(0.0, 0.1)) * deltaLernenReal
+
+        elif self.lernmotivation > 20:
+            deltaIntelligenz = (0.2+uniform(0.0, 0.06)) * deltaLernenReal
+
+        else:
+            deltaIntelligenz = 0.05 * deltaLernenReal
+
+        self.lernmotivation -= deltaLernenReal
         self.intelligenz += deltaIntelligenz
 
-        if self.lernmotivation < 0:
-            self.lernmotivation = 0
-            print ("Ich will nicht lernen.")
-        if self.lernmotivation < 20:
-            print ("Ich will nicht lernen.")
-        if self.lernmotivation < 50:
-            print ("Ich will noch etwas ausruhen.")
-        if self.lernmotivation > 50:
-            self.lernmotivation -= deltaLernen
-            self.intelligenz = self.intelligenz + random.randint(1,6)
+        return deltaIntelligenz
