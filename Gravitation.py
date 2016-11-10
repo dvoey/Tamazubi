@@ -9,7 +9,7 @@ class Animationsdaten(object):
         self.s_v_x = 0
         self.s_v_y = 0
 
-        self.e_p_x = 800
+        self.e_p_x = 700
         self.e_p_y = 500
         self.e_m = 10
         self.e_v_x = 0
