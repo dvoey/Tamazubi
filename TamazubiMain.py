@@ -6,11 +6,34 @@ from Tkinter import *
 class TamazubiMain(object):
 
     def __init__(self):
+        # Fenster / Zeichenflaeche
         self.zeichenflaeche = None
         self.fenster = None
 
-        self.ist_winkel_linkerarm = 2.0
-        self.soll_winkel_linkerarm = 50.0
+        # Tamazubi Aussehen / Konstanten
+        self.laenge_koerper = 200
+        self.laenge_arm = 180
+        self.laenge_bein = 230
+        self.radius_kopf = 40
+        self.breite_koerper = 100
+        self.breite_linkerarm = 30
+
+        # Tamazubi IST
+        self.ist_position_x = 500
+        self.ist_position_y = 500
+        self.ist_winkel_linkerarm = 10.0 #aktuell
+        self.ist_winkel_rechterarm = 10.0
+        self.ist_winkel_linkesbein = 10.0
+        self.ist_winkel_rechtesbein = 10.0
+
+        # Tamazubi SOLL
+        self.soll_position_x = 500
+        self.soll_position_y = 500
+        self.soll_winkel_linkerarm = 10.0 #aktuell
+        self.soll_winkel_rechterarm = 10.0
+        self.soll_winkel_linkesbein = 10.0
+        self.soll_winkel_rechtesbein = 10.0
+
 
     def init(self):
         self.fenster = Tk()
@@ -23,7 +46,23 @@ class TamazubiMain(object):
     def animation(self):
         self.zeichenflaeche.delete(ALL)
 
+        #Positionen
+   #     haupt = CENTER(500, 500)
+   #     ist_winkel_linkerarm = soll_winkel_linkerarm
+
+        # Koerper
+        self.zeichenflaeche.create_line(self.ist_position_x,self.ist_position_y-0.5*self.laenge_koerper,
+                                        self.ist_position_x,self.ist_position_y+0.5*self.laenge_koerper,
+                                        width=self.breite_koerper)
+        # Rechter Arm
+        arm_x = -self.laenge_arm * math.sin(self.ist_winkel_rechterarm) + self.ist_position_x+0.5*self.breite_koerper
+        arm_y = -self.laenge_arm * math.cos(self.ist_winkel_rechterarm) + self.ist_position_y-0.5*self.laenge_koerper
+
+        self.zeichenflaeche.create_line(self.ist_position_x+0.5*self.breite_koerper,
+                                        self.ist_position_y-0.5*self.laenge_koerper, arm_x, arm_y, width=self.breite_linkerarm)
+
         self.fenster.after(20, self.animation)
+
     #def paintTamazubi(window):
 
         # # Positionen
