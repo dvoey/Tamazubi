@@ -68,8 +68,8 @@ class TamazubiMain(object):
 
 
         #Positionen
-   #     haupt = CENTER(500, 500)
-   #     ist_winkel_linkerarm = soll_winkel_linkerarm
+        #haupt = CENTER(500, 500)
+        #ist_winkel_linkerarm = soll_winkel_linkerarm
 
         # Koerper
         self.zeichenflaeche.create_line(self.ist_position_x,
