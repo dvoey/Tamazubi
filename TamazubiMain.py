@@ -17,21 +17,24 @@ class TamazubiMain(object):
         self.radius_kopf = 40
         self.breite_koerper = 100
         self.breite_linkerarm = 30
+        self.breite_rechterarm = 30
+        self.breite_linkesbein = 40
+        self.breite_rechtesbein = 40
 
         # Tamazubi IST
         self.ist_position_x = 500
         self.ist_position_y = 500
-        self.ist_winkel_linkerarm = 10.0 #aktuell
-        self.ist_winkel_rechterarm = 10.0
-        self.ist_winkel_linkesbein = 10.0
-        self.ist_winkel_rechtesbein = 10.0
+        self.ist_winkel_linkerarm = math.radians(0.0)
+        self.ist_winkel_rechterarm = math.radians(-90.0)
+        self.ist_winkel_linkesbein = math.radians(170.0)
+        self.ist_winkel_rechtesbein = math.radians(190)
 
         # Tamazubi SOLL
         self.soll_position_x = 500
         self.soll_position_y = 500
-        self.soll_winkel_linkerarm = 10.0 #aktuell
-        self.soll_winkel_rechterarm = 10.0
-        self.soll_winkel_linkesbein = 10.0
+        self.soll_winkel_linkerarm = math.radians(135.0)
+        self.soll_winkel_rechterarm = math.radians(-135.0)
+        self.soll_winkel_linkesbein = -10.0
         self.soll_winkel_rechtesbein = 10.0
 
 
@@ -46,21 +49,75 @@ class TamazubiMain(object):
     def animation(self):
         self.zeichenflaeche.delete(ALL)
 
+        # Neue Positionen
+        delta = (self.soll_winkel_linkerarm - self.ist_winkel_linkerarm)
+        if delta < -0.1:
+            self.ist_winkel_linkerarm = self.ist_winkel_linkerarm - 0.1
+        elif delta > 0.1:
+            self.ist_winkel_linkerarm = self.ist_winkel_linkerarm + 0.1
+        else:
+            self.ist_winkel_linkerarm = self.soll_winkel_linkerarm
+
+        delta = (self.soll_winkel_rechterarm - self.ist_winkel_rechterarm)
+        if delta < -0.1:
+            self.ist_winkel_rechterarm = self.ist_winkel_rechterarm - 0.1
+        elif delta > 0.1:
+            self.ist_winkel_rechterarm = self.ist_winkel_rechterarm + 0.1
+        else:
+            self.ist_winkel_rechterarm = self.soll_winkel_rechterarm
+
+
         #Positionen
    #     haupt = CENTER(500, 500)
    #     ist_winkel_linkerarm = soll_winkel_linkerarm
 
         # Koerper
-        self.zeichenflaeche.create_line(self.ist_position_x,self.ist_position_y-0.5*self.laenge_koerper,
-                                        self.ist_position_x,self.ist_position_y+0.5*self.laenge_koerper,
+        self.zeichenflaeche.create_line(self.ist_position_x,
+                                        self.ist_position_y-0.5*self.laenge_koerper,
+                                        self.ist_position_x,
+                                        self.ist_position_y+0.5*self.laenge_koerper,
                                         width=self.breite_koerper)
+        # #Kopf
+        self.zeichenflaeche.create_oval(self.ist_position_x-0.75*self.radius_kopf,
+                                        self.ist_position_y-1*self.laenge_koerper,
+                                        self.ist_position_x+0.75*self.radius_kopf,
+                                        self.ist_position_y-0.5*self.laenge_koerper,
+                                        fill="black"
+                                        )
+
         # Rechter Arm
         arm_x = -self.laenge_arm * math.sin(self.ist_winkel_rechterarm) + self.ist_position_x+0.5*self.breite_koerper
         arm_y = -self.laenge_arm * math.cos(self.ist_winkel_rechterarm) + self.ist_position_y-0.5*self.laenge_koerper
 
         self.zeichenflaeche.create_line(self.ist_position_x+0.5*self.breite_koerper,
-                                        self.ist_position_y-0.5*self.laenge_koerper, arm_x, arm_y, width=self.breite_linkerarm)
+                                        self.ist_position_y-0.5*self.laenge_koerper, arm_x, arm_y,
+                                        width=self.breite_rechterarm)
 
+        # Linker Arm
+        arm_x = -self.laenge_arm * math.sin(self.ist_winkel_linkerarm) + self.ist_position_x - 0.5 * self.breite_koerper
+        arm_y = -self.laenge_arm * math.cos(self.ist_winkel_linkerarm) + self.ist_position_y - 0.5 * self.laenge_koerper
+
+        self.zeichenflaeche.create_line(self.ist_position_x - 0.5 * self.breite_koerper,
+                                        self.ist_position_y - 0.5 * self.laenge_koerper, arm_x, arm_y,
+                                        width=self.breite_linkerarm)
+
+        # Rechtes Bein
+        bein_x = -self.laenge_bein * math.sin(self.ist_winkel_rechtesbein) + self.ist_position_x + 0.5 * self.breite_koerper
+        bein_y = -self.laenge_bein * math.cos(self.ist_winkel_rechtesbein) + self.ist_position_y + 0.5 * self.laenge_koerper
+
+        self.zeichenflaeche.create_line(self.ist_position_x + 0.5 * self.breite_koerper,
+                                        self.ist_position_y + 0.5 * self.laenge_koerper, bein_x, bein_y,
+                                        width=self.breite_rechtesbein)
+
+        # Linkes Bein
+        bein_x = -self.laenge_bein * math.sin(self.ist_winkel_linkesbein) + self.ist_position_x - 0.5 * self.breite_koerper
+        bein_y = -self.laenge_bein * math.cos(self.ist_winkel_linkesbein) + self.ist_position_y + 0.5 * self.laenge_koerper
+
+        self.zeichenflaeche.create_line(self.ist_position_x - 0.5 * self.breite_koerper,
+                                        self.ist_position_y + 0.5 * self.laenge_koerper, bein_x, bein_y,
+                                        width=self.breite_linkesbein)
+
+        #Animation ausfuehren
         self.fenster.after(20, self.animation)
 
     #def paintTamazubi(window):
